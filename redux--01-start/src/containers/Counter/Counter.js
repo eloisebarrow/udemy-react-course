@@ -16,7 +16,7 @@ class Counter extends Component {
                 <CounterControl label="Add 10" clicked={this.props.onAdd}  />
                 <CounterControl label="Subtract 15" clicked={this.props.onSubtract}  />
                 <hr />
-                <button onClick={this.props.onStoreResult}>Store Result</button>
+                <button onClick={() => this.props.onStoreResult(this.props.ctr)}>Store Result</button>
                 <ul>
                     {this.props.storedResults.map(strResult => (
                         <li key={strResult.id} onClick={() => this.props.onDeleteResult(strResult.id)}>{strResult.value}</li>
@@ -32,8 +32,8 @@ const mapStateToProps = state => {
     // stores instructions for how state, managed by redux, should be mapped to props we can use in this container 
     return { // an object containing props for the container to use
     // will eventually be passed to our react-redux package
-        ctr: state.counter, // prop 'ctr' with value of state.counter (from reducer.js)
-        storedResults: state.results
+        ctr: state.ctr.counter, // prop 'ctr' with value of state.ctr.counter (from rootReducer in index.js)
+        storedResults: state.res.results
     };
 };
 
@@ -43,7 +43,7 @@ const mapDispatchToProps = dispatch => {
         onDecrementCounter: () => dispatch({ type: actionTypes.DECREMENT }),
         onAdd: () => dispatch({ type: actionTypes.ADD, value: 10 }),
         onSubtract: () => dispatch({ type: actionTypes.SUBTRACT, value: 15 }),
-        onStoreResult: () => dispatch({ type: actionTypes.STORE_RESULT }),
+        onStoreResult: (result) => dispatch({ type: actionTypes.STORE_RESULT, result: result }),
         onDeleteResult: (id) => dispatch({ type: actionTypes.DELETE_RESULT, resultId: id })
     }
 }
